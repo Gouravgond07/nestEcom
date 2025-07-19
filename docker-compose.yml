@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  auth-service:
+    build:
+      context: .
+      dockerfile: apps/auth/Dockerfile # Path to Dockerfile for api-service
+    ports:
+      - "3000:3000"
+  nest-ecommerce:
+    build:
+      context: .
+      dockerfile: apps/nest-ecomerce/Dockerfile
+    ports:
+      - "3001:3001"

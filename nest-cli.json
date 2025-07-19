@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/nest-ecomerce/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/nest-ecomerce/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/nest-ecomerce",
+  "projects": {
+    "auth": {
+      "type": "application",
+      "root": "apps/auth",
+      "entryFile": "main",
+      "sourceRoot": "apps/auth/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/auth/tsconfig.app.json"
+      }
+    },
+    "nest-ecomerce": {
+      "type": "application",
+      "root": "apps/nest-ecomerce",
+      "entryFile": "main",
+      "sourceRoot": "apps/nest-ecomerce/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/nest-ecomerce/tsconfig.app.json"
+      }
+    }
+  }
+}
