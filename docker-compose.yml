@@ -6,9 +6,27 @@ services:
       dockerfile: apps/auth/Dockerfile # Path to Dockerfile for api-service
     ports:
       - "3000:3000"
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_NAME=myDB
+      - DB_USER=gourav
+      - DB_PASSWORD=12345678
+    depends_on:
+      - db
   nest-ecommerce:
     build:
       context: .
       dockerfile: apps/nest-ecomerce/Dockerfile
     ports:
       - "3001:3001"
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: gourav@123
+      MYSQL_DATABASE: myDB
+      MYSQL_USER: gourav
+      MYSQL_PASSWORD: 12345678
+    ports:
+      - "3307:3306"
+
