@@ -4,7 +4,8 @@ import { AuthService } from './auth.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { JwtModule } from '@nestjs/jwt';
-
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import * as Joi from 'joi';
 
 const jwtConstants = {
   secret: 'MY_SECRETE',
@@ -12,20 +13,34 @@ const jwtConstants = {
 
 @Module({
   imports: [
-     JwtModule.register({
+    JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '60s' },
     }),
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: process.env.DB_HOST,
-      port: process.env.DB_PORT ? +process.env.DB_PORT : 3306,
-      username: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
-      entities: [User],
-      synchronize: true,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      validationSchema: Joi.object({
+        DB_HOST: Joi.string().required(),
+        DB_PORT: Joi.number().required(),
+        DB_USER: Joi.string().required(),
+        DB_PASSWORD: Joi.string().required(),
+        DB_NAME: Joi.string().required()
+      })
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        type: 'mysql',
+        host: configService.get<string>('DB_HOST'),
+        port: configService.get<number>('DB_PORT'),
+        username: configService.get<string>('DB_USER'),
+        password: configService.get<string>('DB_PASSWORD'),
+        database: configService.get<string>('DB_NAME'),
+        entities: [User],
+        synchronize: true,
+      }),
+      inject: [ConfigService]
     }),
     TypeOrmModule.forFeature([User]),
   ],
