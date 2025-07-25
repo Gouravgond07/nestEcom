@@ -13,6 +13,8 @@ services:
       - DB_NAME=myDB
       - DB_USER=gourav
       - DB_PASSWORD=12345678
+      - JWT_SECRET=mySecrete
+      - JWT_EXPIRATION=3600
     depends_on:
       - db
   nest-ecommerce:
