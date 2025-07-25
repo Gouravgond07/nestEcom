@@ -8,6 +8,7 @@ import * as Joi from 'joi';
 import { LocalStrategy } from './stategies/local.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from './stategies/jwt.strategy';
 
 
 @Module({
@@ -55,6 +56,6 @@ import { JwtModule } from '@nestjs/jwt';
     TypeOrmModule.forFeature([User]),
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy],
 })
 export class AuthModule { }
