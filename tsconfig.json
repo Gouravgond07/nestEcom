@@ -17,6 +17,13 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
-    "paths": {}
+    "paths": {
+      "@app/auth-g": [
+        "libs/auth-g/src"
+      ],
+      "@app/auth-g/*": [
+        "libs/auth-g/src/*"
+      ]
+    }
   }
 }

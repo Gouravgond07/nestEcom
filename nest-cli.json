@@ -19,6 +19,15 @@
         "tsConfigPath": "apps/auth/tsconfig.app.json"
       }
     },
+    "auth-g": {
+      "type": "library",
+      "root": "libs/auth-g",
+      "entryFile": "index",
+      "sourceRoot": "libs/auth-g/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/auth-g/tsconfig.lib.json"
+      }
+    },
     "nest-ecomerce": {
       "type": "application",
       "root": "apps/nest-ecomerce",

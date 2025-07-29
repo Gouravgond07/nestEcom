@@ -22,7 +22,7 @@ export class AuthService {
         email: createUser.email
       }
     })
-    if(user) {
+    if (user) {
       return new ConflictException('User already exist');
     }
     const actualPassword = createUser.password;
@@ -55,5 +55,13 @@ export class AuthService {
     return {
       access_token: this.jwtService.sign(payload),
     };
+  }
+
+  validateToken(token: string) {
+    try {
+      return this.jwtService.verify(token);
+    } catch (err) {
+      return null;
+    }
   }
 }

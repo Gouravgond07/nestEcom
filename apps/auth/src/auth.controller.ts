@@ -2,7 +2,9 @@ import { Body, Controller, Post, UseGuards, Request, Get } from '@nestjs/common'
 import { AuthService } from './auth.service';
 import { CreteUserDto } from './dto/create-user.dto';
 import { LocalAuthGuard } from './guards/local-auth.guard';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
+// import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { MessagePattern } from '@nestjs/microservices';
+import { JwtAuthGuard } from '@app/auth-g/jwt-auth.guard';
 
 @Controller()
 export class AuthController {
@@ -25,5 +27,11 @@ export class AuthController {
   @Get('profile')
   async getProfile(@Request() req) {
     return req.user;
+  }
+
+  @MessagePattern({ cmd: 'VALIDATE_TOKEN' })
+  async microMsg(data: any) { 
+    console.log('Microservice message received:', data);
+    return this.authService.validateToken(data.token);
   }
 }

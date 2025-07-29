@@ -9,6 +9,9 @@ import { LocalStrategy } from './stategies/local.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './stategies/jwt.strategy';
+import { AuthGModule } from '@app/auth-g';
+import { JwtAuthGuard } from '@app/auth-g/jwt-auth.guard';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 
 @Module({
@@ -54,6 +57,15 @@ import { JwtStrategy } from './stategies/jwt.strategy';
       inject: [ConfigService]
     }),
     TypeOrmModule.forFeature([User]),
+    // AuthGModule,
+    ClientsModule.register([{
+          name: 'AUTH_SERVICE',
+          transport: Transport.TCP, 
+          options: {
+            host: '0.0.0.0',
+            port: 3001,
+          },
+        }])
   ],
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy],
