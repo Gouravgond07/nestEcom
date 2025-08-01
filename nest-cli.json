@@ -37,15 +37,6 @@
         "tsConfigPath": "apps/cart/tsconfig.app.json"
       }
     },
-    "nest-ecomerce": {
-      "type": "application",
-      "root": "apps/nest-ecomerce",
-      "entryFile": "main",
-      "sourceRoot": "apps/nest-ecomerce/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/nest-ecomerce/tsconfig.app.json"
-      }
-    },
     "product": {
       "type": "application",
       "root": "apps/product",
