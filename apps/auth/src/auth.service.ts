@@ -58,10 +58,11 @@ export class AuthService {
   }
 
   validateToken(token: string) {
-    try {
-      return this.jwtService.verify(token);
-    } catch (err) {
-      return null;
-    }
+    return this.jwtService.verify(token);
+    // try {
+    //   return this.jwtService.verify(token);
+    // } catch (err) {
+    //   return null;
+    // }
   }
 }
