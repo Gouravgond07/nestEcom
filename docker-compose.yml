@@ -39,6 +39,27 @@ services:
     depends_on:
       - db
       - auth-service
+    
+  cart-service:
+    image: cart-service
+    build:
+      context: .
+      dockerfile: apps/cart/Dockerfile # Path to Dockerfile for api-service
+    ports:
+      - "3004:3004"
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_NAME=myDB
+      - DB_USER=gourav
+      - DB_PASSWORD=12345678
+      - HTTP_PORT=3004
+      - TCP_PORT=3001
+      - AUTH_HOST=auth-service
+      - AUTH_PORT=3001
+    depends_on:
+      - db
+      - auth-service
   db:
     image: mysql:8.0
     environment:

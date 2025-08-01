@@ -28,6 +28,15 @@
         "tsConfigPath": "libs/auth-g/tsconfig.lib.json"
       }
     },
+    "cart": {
+      "type": "application",
+      "root": "apps/cart",
+      "entryFile": "main",
+      "sourceRoot": "apps/cart/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/cart/tsconfig.app.json"
+      }
+    },
     "nest-ecomerce": {
       "type": "application",
       "root": "apps/nest-ecomerce",
