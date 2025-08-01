@@ -9,8 +9,6 @@ import { LocalStrategy } from './stategies/local.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './stategies/jwt.strategy';
-import { AuthGModule } from '@app/auth-g';
-import { JwtAuthGuard } from '@app/auth-g/jwt-auth.guard';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
 
@@ -38,34 +36,34 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         }
       }),
       inject: [ConfigService]
-    }), 
-    PassportModule,   
+    }),
+    PassportModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => {
         return {
-        type: 'mysql',
-        host: configService.get<string>('DB_HOST'),
-        port: configService.get<number>('DB_PORT'),
-        username: configService.get<string>('DB_USER'),
-        password: configService.get<string>('DB_PASSWORD'),
-        database: configService.get<string>('DB_NAME'),
-        entities: [User],
-        synchronize: true,
-      }},
-      
+          type: 'mysql',
+          host: configService.get<string>('DB_HOST'),
+          port: configService.get<number>('DB_PORT'),
+          username: configService.get<string>('DB_USER'),
+          password: configService.get<string>('DB_PASSWORD'),
+          database: configService.get<string>('DB_NAME'),
+          entities: [User],
+          synchronize: true,
+        }
+      },
+
       inject: [ConfigService]
     }),
     TypeOrmModule.forFeature([User]),
-    // AuthGModule,
     ClientsModule.register([{
-          name: 'AUTH_SERVICE',
-          transport: Transport.TCP, 
-          options: {
-            host: '0.0.0.0',
-            port: 3001,
-          },
-        }])
+      name: 'AUTH_SERVICE',
+      transport: Transport.TCP,
+      options: {
+        host: '0.0.0.0',
+        port: 3001,
+      },
+    }])
   ],
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy],

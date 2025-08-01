@@ -24,8 +24,30 @@ services:
     build:
       context: .
       dockerfile: apps/nest-ecomerce/Dockerfile
+    environment:
+      - HTTP_PORT=3002
     ports:
       - "3001:3001"
+  product-service:
+    image: product-service
+    build:
+      context: .
+      dockerfile: apps/product/Dockerfile # Path to Dockerfile for api-service
+    ports:
+      - "3003:3003"
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_NAME=myDB
+      - DB_USER=gourav
+      - DB_PASSWORD=12345678
+      - HTTP_PORT=3003
+      - TCP_PORT=3001
+      - AUTH_HOST=auth-service
+      - AUTH_PORT=3001
+    depends_on:
+      - db
+      - auth-service
   db:
     image: mysql:8.0
     environment:
@@ -35,4 +57,3 @@ services:
       MYSQL_PASSWORD: 12345678
     ports:
       - "3307:3306"
-
