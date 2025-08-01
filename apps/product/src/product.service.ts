@@ -14,7 +14,7 @@ export class ProductService {
 
   // CREATE
   async create(userId: number, createProductDto: CreateProductDto): Promise<Product> {
-    const product = this.productRepository.create({...createProductDto, userId});
+    const product = this.productRepository.create({ ...createProductDto, userId });
     return this.productRepository.save(product);
   }
 
@@ -33,15 +33,22 @@ export class ProductService {
   }
 
   // UPDATE
-  async update(id: number, updateProductDto: UpdateProductDto): Promise<Product> {
-    await this.findOne(id); // throws if not found
+  async update(id: number, updateProductDto: UpdateProductDto, userId: number): Promise<Product> {
+    // await this.findOne(id); // throws if not found
+    const product = await this.productRepository.findOneBy({ id, userId });
+    if (!product) {
+      throw new NotFoundException(`Product with id ${id} not found for user`);
+    }
     await this.productRepository.update(id, updateProductDto);
     return this.findOne(id); // return updated
   }
 
   // DELETE
-  async remove(id: number): Promise<void> {
-    await this.findOne(id); // throws if not found
+  async remove(id: number, userId: number): Promise<void> {
+    const product = await this.productRepository.findOneBy({ id, userId });
+    if(!product) {
+      throw new NotFoundException(`Product with id ${id} not found for user`);
+    }
     await this.productRepository.delete(id);
   }
 }

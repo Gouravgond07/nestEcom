@@ -15,7 +15,6 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
 import { JwtAuthGuard } from '@app/auth-g';
 import { CurrentUser } from '@app/auth-g/current-user.directive';
-import { userInfo } from 'os';
 import { CurrentUserDto } from '@app/auth-g/current-user.dto';
 
 @UseGuards(JwtAuthGuard)
@@ -49,12 +48,12 @@ export class ProductController {
     @Param('id', ParseIntPipe) id: number,
     @Body() updateProductDto: UpdateProductDto,
   ): Promise<Product> {
-    return this.productService.update(id, updateProductDto);
+    return this.productService.update(id, updateProductDto, userInfo.sub);
   }
 
   // DELETE
   @Delete(':id')
-  async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
-    return this.productService.remove(id);
+  async remove(@CurrentUser() userInfo: CurrentUserDto,@Param('id', ParseIntPipe) id: number): Promise<void> {
+    return this.productService.remove(id, userInfo.sub);
   }
 }
