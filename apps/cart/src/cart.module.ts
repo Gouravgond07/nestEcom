@@ -7,6 +7,7 @@ import * as Joi from 'joi';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { Cart } from './entities/cart.entity';
 import { CartItem } from './entities/cart-item.entity';
+import { KafkaProducerService } from './kafka.service';
 
 @Module({
   imports: [
@@ -50,9 +51,24 @@ import { CartItem } from './entities/cart-item.entity';
         }
       },
       inject: [ConfigService]
-    }])
+    }]),
+    ClientsModule.register([
+      {
+        name: 'HERO_SERVICE',
+        transport: Transport.KAFKA,
+        options: {
+          client: {
+            clientId: 'hero',
+            brokers: ['kafka:9092'],
+          },
+          consumer: {
+            groupId: 'nestjs-consumer'
+          }
+        }
+      },
+    ]),
   ],
   controllers: [CartController],
-  providers: [CartService],
+  providers: [CartService, KafkaProducerService],
 })
 export class CartModule { }

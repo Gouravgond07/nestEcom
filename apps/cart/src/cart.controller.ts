@@ -12,11 +12,15 @@ import { CartService } from './cart.service';
 import { CurrentUser } from '@app/auth-g/current-user.directive';
 import { CurrentUserDto } from '@app/auth-g/current-user.dto';
 import { JwtAuthGuard } from '@app/auth-g';
+import { MessagePattern, Payload } from '@nestjs/microservices';
+import { KafkaProducerService } from './kafka.service';
 
-@UseGuards(JwtAuthGuard)
+// @UseGuards(JwtAuthGuard)
 @Controller('cart')
 export class CartController {
-  constructor(private readonly cartService: CartService) { }
+  constructor(private readonly cartService: CartService,
+    private readonly kafkaProducerService: KafkaProducerService
+  ) { }
 
   @Get()
   async getCart(@CurrentUser() userInfo: CurrentUserDto) {
@@ -42,5 +46,18 @@ export class CartController {
   @Delete('clear')
   async clearCart(@CurrentUser() userInfo: CurrentUserDto) {
     return this.cartService.clearCart(userInfo);
+  }
+
+  @MessagePattern('hero.create')
+  async handleKafkaMessage(@Payload() message: any) {
+    console.log('Received message:', message);
+  }
+
+  @Get('kafka')
+  async sendMsg() {
+    this.kafkaProducerService.sendMessage('my-topic', {name: 'gourav'})
+    return {
+      msg: 'hello'
+    }
   }
 }
