@@ -15,7 +15,7 @@ import { JwtAuthGuard } from '@app/auth-g';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { KafkaProducerService } from './kafka.service';
 
-// @UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('cart')
 export class CartController {
   constructor(private readonly cartService: CartService,
